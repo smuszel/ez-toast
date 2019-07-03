@@ -1,0 +1,69 @@
+{
+    "name": "ez-toast",
+    "version": "0.0.0",
+    "description": "Dependency free Toastr rewrite",
+    "keywords": [],
+    "main": "dist/ez-toast.umd.js",
+    "module": "dist/ez-toast.es5.js",
+    "typings": "dist/types/ez-toast.d.ts",
+    "files": [
+        "dist"
+    ],
+    "author": "smuszel <stanislaw.muszel@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/smuszel/ez-toast"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "scripts": {
+        "prebuild": "rimraf build",
+        "build": "tsc && webpack --mode=production",
+        "start": "rollup -c rollup.config.js -w",
+        "test": "cypress",
+        "semantic-release": "semantic-release"
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-conventional-changelog"
+        }
+    },
+    "prettier": {
+        "semi": true,
+        "singleQuote": true,
+        "printWidth": 90,
+        "arrowParens": "avoid",
+        "bracketSpacing": true,
+        "trailingComma": "all",
+        "tabWidth": 4
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
+        "@babel/preset-typescript": "^7.3.3",
+        "@babel/register": "^7.4.4",
+        "@commitlint/cli": "^8.0.0",
+        "@commitlint/config-conventional": "^8.0.0",
+        "@types/cypress": "^1.1.3",
+        "@types/node": "^12.0.10",
+        "chai": "^4.2.0",
+        "cypress": "^3.3.2",
+        "prettier": "^1.14.3",
+        "rimraf": "^2.6.2",
+        "webpack": "^4.35.2",
+        "webpack-cli": "^3.3.5",
+        "babel-loader": "^8.0.6",
+        "tslint": "^5.18.0",
+        "tslint-config-prettier": "^1.18.0",
+        "tslint-config-standard": "^8.0.1",
+        "@cypress/webpack-preprocessor": "^4.1.0",
+        "typescript": "^3.5.2"
+    }
+}
