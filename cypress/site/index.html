@@ -7,6 +7,51 @@
     <title></title>
 </head>
 <body>
-    
+    <!-- import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { Toast } from '../index';
+
+const Example = () => {
+    const [state, setState] = React.useState({ text: '', type: 'success' });
+    return (
+        <div>
+            <div>
+                <input
+                    placeholder="Message Text"
+                    type="text" value={state.text}
+                    onChange={ev => setState({ ...state, text: ev.target.value })}
+                />
+            </div>
+            <div onChange={ev => setState({...state, type: ev.target.value})}>
+                <label style={{ display: 'block'}}>
+                    Success
+                    <input type="radio" name="type" checked={state.type === 'success'} value={'success'} />
+                </label>
+                <label label style={{ display: 'block'}}>
+                    Error
+                    <input type="radio" name="type" checked={state.type === 'error'} value={'error'} />
+                </label>
+                <label label style={{ display: 'block'}}>
+                    Info
+                    <input type="radio" name="type" checked={state.type === 'info'} value={'info'} />
+                </label>
+                <label label style={{ display: 'block'}}>
+                    Waring
+                    <input type="radio" name="type" checked={state.type === 'warning'} value={'warning'} />
+                </label>
+            </div>
+            <div>
+                <button type="button" className="btn" onClick={() => Toast[state.type](state.text)}>
+                    Trigger
+                </button>
+            </div>
+        </div>
+    );
+}
+
+storiesOf('Toastr', module)
+    .add('Basic', () => React.createElement(Example)); -->
+
 </body>
 </html>
