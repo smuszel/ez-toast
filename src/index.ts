@@ -1,72 +1,61 @@
+import { ToastHandler, AppendToast, CreateToast, Options } from './types';
+
+let container: HTMLDivElement;
+
+const defaultOptions: Options = {
+    showMethod: 'fadeIn',
+    hideMetod: 'fadeOut',
+    timeout: 3000,
+};
+
 const createContainer = () => {
     const container = document.createElement('div');
     container.id = 'toast-container';
     container.className = 'toast-top-center';
-    document.body.appendChild(container);
 
     return container;
 };
 
-const Toast = ({ text, duration, type, animationIn, animationOut }) => {
-    const prepareExit = () => {
-        clearTimeout(defaultExit);
-        innerToast.className = `toast toast-${type} ${animationOut} animated`;
+const createToast: CreateToast = (flavour, message, options) => {
+    const startDisposal = () => {
+        clearTimeout(disposeByTime);
+        toast.className = `toast toast-${flavour}`;
     };
 
-    const innerToast = document.createElement('div');
-    innerToast.setAttribute('aria-live', 'polite');
-    innerToast.addEventListener('click', prepareExit);
-    innerToast.className = `toast toast-${type} ${animationIn} animated`;
-    innerToast.style.width = '600px';
-    innerToast.addEventListener('animationend', ev => {
-        ev.animationName === animationOut &&
-            innerToast.parentNode.removeChild(innerToast);
+    const toast = document.createElement('div');
+    toast.setAttribute('aria-live', 'polite');
+    toast.addEventListener('click', startDisposal);
+    toast.className = `toast toast-${flavour}`;
+    toast.addEventListener('animationend', () => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
     });
 
-    const message = document.createElement('div');
-    message.className = 'toast-message';
-    message.textContent = text;
-    innerToast.appendChild(message);
+    const messageElement = document.createElement('div');
+    messageElement.className = 'toast-message';
+    messageElement.textContent = message;
+    toast.appendChild(messageElement);
 
-    const defaultExit = setTimeout(prepareExit, duration);
+    const disposeByTime = setTimeout(startDisposal, options.timeout);
 
-    return innerToast;
+    return toast;
 };
 
-const ToastHandler = {
-    container: createContainer(),
-    ensureContainer: function() {
-        !this.container && (this.container = createContainer());
-    },
-    appendToast: function(fullOptions) {
-        if (fullOptions.text && typeof fullOptions.text === 'string') {
-            this.ensureContainer();
-            this.container.appendChild(
-                Toast({
-                    ...fullOptions,
-                    duration: fullOptions.duration || 10000,
-                    animationIn: fullOptions.animationIn || 'fadeIn',
-                    animationOut: fullOptions.animationOut || 'fadeOut',
-                }),
-            );
-        }
-    },
-    success: function(text, options = {}) {
-        this.appendToast({ text, type: 'success', ...options });
-    },
-    error: function(text, options = {}) {
-        this.appendToast({ text, type: 'error', ...options });
-    },
-    info: function(text, options = {}) {
-        this.appendToast({ text, type: 'info', ...options });
-    },
-    warning: function(text, options = {}) {
-        this.appendToast({ text, type: 'warning', ...options });
-    },
-    cleanup: function() {
-        this.container && this.container.remove();
-        delete this.container;
-    },
+const appendToast: AppendToast = (flavour, message, options) => {
+    if (!container || container.parentElement) {
+        container = createContainer();
+        document.body.appendChild(container);
+    }
+
+    const opt = { ...defaultOptions, ...(options || {}) };
+    const toast = createToast(flavour, message, opt);
+    container.appendChild(toast);
 };
 
-export default ToastHandler;
+export const Toast: ToastHandler = {
+    error: (message: string, options) => appendToast('error', message, options),
+    success: (message: string, options) => appendToast('success', message, options),
+    info: (message: string, options) => appendToast('info', message, options),
+    warning: (message: string, options) => appendToast('warning', message, options),
+};
